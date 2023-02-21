@@ -32,7 +32,7 @@ router.post('/service/add',Uploads.single('avatar'),async(req,res)=>{
         service.image=req.file.filename
     }
  await service.save()
-    res.send(service)
+    res.status(200).send(service)
  }
  catch(e){
  res.status(400).send(e.message)

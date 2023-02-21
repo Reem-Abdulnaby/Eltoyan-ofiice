@@ -1,8 +1,7 @@
 const mongoose=require('mongoose')
 const validator=require('validator')
-
-const requestSchema=mongoose.Schema({
-    name:{
+const applaySchema=mongoose.Schema({
+    fullName:{
         type:String,
         trim:true,
         required:true,
@@ -29,19 +28,22 @@ const requestSchema=mongoose.Schema({
         }
         
     },
-    serviceType:{
+    resume:{
         type:String,
-        trim:true,
         required:true,
-        minLength:3
+    
     },
     message:{
         type:String,
         trim:true,
-       // required:true,
         minLength:3
     }
 
 })
-const Request=mongoose.model('requests',requestSchema)
-module.exports=Request
+applaySchema.methods.toJSON=function(){
+    const applay=this
+    const applayObj=applay.toObject()
+    return applayObj
+}
+const Applay=mongoose.model('applaies',applaySchema)
+module.exports=Applay
