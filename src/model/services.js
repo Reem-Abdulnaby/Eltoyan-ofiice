@@ -14,8 +14,8 @@ const serviceSchema=mongoose.Schema({
     image:{
         type:String,
         
-    }
-     
+    },
+    
 })
 serviceSchema.methods.toJSON=function(){
     const service=this
