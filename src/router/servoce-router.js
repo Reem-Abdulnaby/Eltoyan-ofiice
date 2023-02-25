@@ -77,6 +77,17 @@ router.get('/service/getall',async(req,res)=>{
         res.status(400).send(e.massage)
     }
 })
+//serch
+router.get('/service/getbyname/:name',async(req,res)=>{
+ try{
+    const serviceName=req.params.name
+    const service= await Service.find({title:{$regex:new RegExp(serviceName,"i")}})
+    res.status(200).send(service)
+ }
+ catch(e){
+    res.status(400).send(e.message)
+ }
+})
 router.delete('/service/deletebyid/:id',async(req,res)=>{
   try{
     const serviceId=req.params.id

@@ -5,7 +5,8 @@ const auth=require('../middelware/auth')
 const Service=require('../model/services')
 const Client=require('../model/clients')
 const Request=require('../model/requests')
-const Apply=require('../model/applay')
+const Applay=require('../model/applay')
+const Contact=require('../model/contact')
 const multer=require('multer')
 const path=require('path')
 const Uploads=multer({
@@ -331,4 +332,33 @@ router.delete('/admin/applay/deleteall',auth,async(req,res)=>{
       res.status(400).send(e.message)
   }
 })
+//contact us 
+router.post('/admin/contact/add',auth,async(req,res)=>{
+ try{
+  const contact= new Contact(req.body)
+  await contact.save()
+  res.status(200).send(contact)
+ }
+ catch(e){
+  res.status(400).send(e.message)
+ }
+})
+router.patch('/admin/contact/update/:id',auth,async(req,res)=>{
+  try{
+    const contactId=req.params.id
+    const contact= await Contact.findByIdAndUpdate({_id:contactId},req.body,{
+      new:true,
+      runValidators:true
+    })
+    if(!contact){
+      return res.status(404).send('not found')
+    }
+  await contact.save()
+  res.status(200).send(contact)
+ }
+ catch(e){
+  res.status(400).send(e.message)
+ }
+})
+
 module.exports=router
