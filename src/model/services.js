@@ -6,6 +6,11 @@ const serviceSchema=mongoose.Schema({
         trim:true,
         required:true,
     },
+    subTitle:{
+        type:String,
+        trim:true,
+        required:true
+    },
     description:{
         type:String,
         trim:true,

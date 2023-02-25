@@ -7,6 +7,7 @@ const Client=require('../model/clients')
 const Request=require('../model/requests')
 const Applay=require('../model/applay')
 const Contact=require('../model/contact')
+const Info=require('../model/information')
 const multer=require('multer')
 const path=require('path')
 const Uploads=multer({
@@ -101,7 +102,7 @@ router.delete('/admin/logoutall',auth,async(req,res)=>{
       res.status(500).send(e.message)
   }
 })
- router.post('/admin/service/insert',auth,Uploads.single('avatar'),async(req,res)=>{
+ router.post('/admin/service/add',auth,Uploads.single('avatar'),async(req,res)=>{
 try{
   const service=new Service(req.body)
   if(req.file){
@@ -260,7 +261,10 @@ router.post('/admin/client/add',auth,Uploads.single('avatar'),async(req,res)=>{
  router.patch('/admin/client/update/:id',auth,Uploads.single('avatar'),async(req,res)=>{
      try{
          const clientId=req.params.id
-         const client= await Client.findById({_id:clientId})
+         const client= await Client.findByIdAndUpdate({_id:clientId},req.body,{
+          new:true,
+          runValidators:true
+         })
          client.image=req.file.filename
          await client.save()
          res.status(200).send(client)
@@ -359,6 +363,35 @@ router.patch('/admin/contact/update/:id',auth,async(req,res)=>{
  catch(e){
   res.status(400).send(e.message)
  }
+})
+//general-information
+router.post('/admin/info/add',auth,async(req,res)=>{
+  try{
+    const info= new Info(req.body)
+    await info.save()
+    res.status(200).send(info)
+  }
+  catch(e){
+    res.status(400).send(e.message)
+  }
+})
+router.patch('/admin/info/update/:id',auth,async(req,res)=>{
+  try{
+    const infoId=req.params.id
+    const info = await Info.findByIdAndUpdate({_id:infoId},req.body,{
+      new:true,
+      runValidators:true
+    })
+    if(!info){
+      return res.status(404).send('not found')
+    }
+    await info.save()
+    res.status(200).send(info)
+
+  }
+  catch(e){
+    res.status(400).send(e.message)
+  }
 })
 
 module.exports=router

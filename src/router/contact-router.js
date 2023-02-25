@@ -12,4 +12,14 @@ catch(e){
 }
 
 })
+router.get('/contactt/all',async(req,res)=>{
+    try{ 
+     const contact= await Contact.find()
+     res.status(200).send(contact)
+ }
+ catch(e){
+     res.status(400).send(e.message)
+ }
+ 
+ })
 module.exports=router
