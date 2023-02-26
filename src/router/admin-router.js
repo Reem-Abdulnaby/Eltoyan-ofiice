@@ -8,6 +8,8 @@ const Request=require('../model/requests')
 const Applay=require('../model/applay')
 const Contact=require('../model/contact')
 const Info=require('../model/information')
+const Slider=require('../model/slider')
+const Blog=require('../model/blogs')
 const multer=require('multer')
 const path=require('path')
 const Uploads=multer({
@@ -393,5 +395,68 @@ router.patch('/admin/info/update/:id',auth,async(req,res)=>{
     res.status(400).send(e.message)
   }
 })
-
+//slider
+router.post('/admin/slider/add',Uploads.single('avatar'),auth,async(req,res)=>{
+  try{
+    const slider=new Slider(req.body)
+    slider.image=req.file.filename
+    await slider.save()
+    res.status(200).send(slider)
+  }
+  catch(e){
+    res.status(400).send(e.massage)
+  }
+})
+router.patch('/admin/slider/update/:id',Uploads.single('avatar'),auth,async(req,res)=>{
+  try{
+    const sliderId=req.params.id
+    const slider=await Slider.findByIdAndUpdate({_id:sliderId},req.body,{
+      new:true,
+      runValidators:true
+    })
+    if(!slider){
+      return res.status(404).send('not found')
+    }
+    if(req.file)
+    slider.image=req.file.filename
+    await slider.save()
+    res.status(200).send(slider)
+  }
+  catch(e){
+    res.status(400).send(e.massage)
+  }
+})
+//blog
+router.post('/admin/blog/add',Uploads.single('avatar'),auth,async(req,res)=>{
+  try{
+    const blog=new Blog(req.body)
+    if(req.file){
+      blog.image=req.file.filename
+    }
+    await blog.save()
+    res.status(200).send(blog)
+  }
+  catch(e){
+    res.status(400).send(e.message)
+  }
+})
+router.patch('/admin/blog/update/:id',Uploads.single('avatar'),auth,async(req,res)=>{
+  try{
+    const blogId=req.params.id
+    const blog=await Blog.findByIdAndUpdate({_id:blogId},req.body,{
+      new:true,
+      runValidators:true
+    })
+    if(!blog){
+      return res.status(404).send('not found')
+    }
+    if(req.file)
+    blog.image=req.file.filename
+    await blog.save()
+    res.status(200).send(blog)
+  }
+  catch(e){
+    res.status(400).send(e.massage)
+  }
+})
 module.exports=router

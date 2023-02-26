@@ -1,7 +1,6 @@
 const mongoose=require('mongoose')
-const serviceSchema=mongoose.Schema({
-
-
+const timestamps=require('mongoose-timestamp')
+const blogSchema=mongoose.Schema({
     title: {
         en: {
             type: String,
@@ -14,18 +13,7 @@ const serviceSchema=mongoose.Schema({
             required: true,
         }
     },
-    subTitle: {
-        en: {
-            type: String,
-            trim: true,
-            required: true,
-        },
-        ar: {
-            type: String,
-            trim: true,
-            required: true,
-        }
-    },
+
     description: {
         en: {
             type: String,
@@ -43,10 +31,6 @@ const serviceSchema=mongoose.Schema({
     }
 
 })
-serviceSchema.methods.toJSON=function(){
-    const service=this
-    const seviceObj=service.toObject()
-    return seviceObj
-}
- const Service=mongoose.model('services',serviceSchema)
-module.exports=Service
+blogSchema.plugin(timestamps)
+const Blog=mongoose.model('blogs',blogSchema)
+module.exports=Blog
