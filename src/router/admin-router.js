@@ -437,6 +437,28 @@ router.patch('/admin/slider/update/:id',Uploads.single('avatar'),auth,async(req,
     res.status(400).send(e.massage)
   }
 })
+router.delete('/admin/slider/deletebyid/:id',auth,async(req,res)=>{
+  try{
+    const sliderId=req.params.id
+    const slider=await Slider.findByIdAndDelete({_id:sliderId})
+    if(!slider){
+      return res.status(404).send('not found')
+    }
+    res.status(200).send('successfuly deleted')
+  }
+  catch(e){
+    res.status(400).send(e.massage)
+  }
+})
+router.delete('/admin/slider/deleteall',auth,async(req,res)=>{
+  try{
+     await  Slider.deleteMany({})
+      res.status(200).send('done')
+  }
+  catch(e){
+      res.status(400).send(e.message)
+  }
+})
 //blog
 router.post('/admin/blog/add',Uploads.single('avatar'),auth,async(req,res)=>{
   try{
@@ -468,6 +490,28 @@ router.patch('/admin/blog/update/:id',Uploads.single('avatar'),auth,async(req,re
   }
   catch(e){
     res.status(400).send(e.massage)
+  }
+})
+router.delete('/admin/blog/deletebyid/:id',auth,async(req,res)=>{
+  try{
+    const blogId=req.params.id
+    const blog=await Blog.findByIdAndDelete({_id:blogId})
+    if(!blog){
+      return res.status(404).send('not found')
+    }
+    res.status(200).send('successfuly deleted')
+  }
+  catch(e){
+    res.status(400).send(e.massage)
+  }
+})
+router.delete('/admin/blog/deleteall',auth,async(req,res)=>{
+  try{
+     await  Blog.deleteMany({})
+      res.status(200).send('done')
+  }
+  catch(e){
+      res.status(400).send(e.message)
   }
 })
 module.exports=router
