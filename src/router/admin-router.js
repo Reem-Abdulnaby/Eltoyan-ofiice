@@ -340,6 +340,7 @@ router.delete('/admin/applay/deleteall',auth,async(req,res)=>{
   }
 })
 //newsLetter
+
 router.get('/admin/news/getall',auth,async(req,res)=>{
   try{
       const membrs= await NewsLetter.find()
@@ -359,6 +360,16 @@ router.post('/admin/contact/add',auth,async(req,res)=>{
  catch(e){
   res.status(400).send(e.message)
  }
+})
+router.get('/admin/contact/all',auth,async(req,res)=>{
+  try{ 
+   const contact= await Contact.find({})
+   res.status(200).send(contact)
+}
+catch(e){
+   res.status(400).send(e.message)
+}
+
 })
 router.patch('/admin/contact/update/:id',auth,async(req,res)=>{
   try{
