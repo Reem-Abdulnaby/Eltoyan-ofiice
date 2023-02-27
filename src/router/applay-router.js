@@ -9,7 +9,7 @@ const Uploads=multer({
     },
     fileFilter(req,file,cb){
         if(!file.originalname.match(/\.(pdf)$/))
-            return cb(new Error('please upload fil !'))
+            return cb(new Error('please upload file !'))
         cb(null,true)
     },
     storage:multer.diskStorage({
@@ -39,7 +39,7 @@ router.post('/jop/applay',Uploads.single('file'),async(req,res)=>{
 })
 router.get('/applay/all',async(req,res)=>{
     try{
-        const applaies= await Applay.find()
+        const applaies= await Applay.find({})
         res.status(200).send(applaies)
     }
     catch(e){

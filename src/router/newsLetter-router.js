@@ -1,9 +1,10 @@
 const express=require('express')
 const router=express.Router()
 const NewsLetter=require('../model/newsLetter')
-router.get('/news/getall',async(req,res)=>{
+router.post('/news/add',async(req,res)=>{
     try{
-        const newsLetter= await NewsLetter.find()
+        const newsLetter= new NewsLetter(req.body)
+        await newsLetter.save()
         res.status(200).send(newsLetter)
     }
     catch(e){

@@ -10,6 +10,7 @@ const Contact=require('../model/contact')
 const Info=require('../model/information')
 const Slider=require('../model/slider')
 const Blog=require('../model/blogs')
+const NewsLetter=require('../model/newsLetter')
 const multer=require('multer')
 const path=require('path')
 const Uploads=multer({
@@ -296,7 +297,7 @@ router.post('/admin/client/add',auth,Uploads.single('avatar'),async(req,res)=>{
  })
  router.get('/admin/applay/all',auth,async(req,res)=>{
   try{
-      const applaies= await Applay.find()
+      const applaies= await Applay.find({})
       res.status(200).send(applaies)
   }
   catch(e){
@@ -333,6 +334,16 @@ router.delete('/admin/applay/deleteall',auth,async(req,res)=>{
   try{
      await  Applay.deleteMany({})
       res.status(200).send('done')
+  }
+  catch(e){
+      res.status(400).send(e.message)
+  }
+})
+//newsLetter
+router.get('/admin/news/getall',auth,async(req,res)=>{
+  try{
+      const membrs= await NewsLetter.find()
+      res.status(200).send(membrs)
   }
   catch(e){
       res.status(400).send(e.message)
